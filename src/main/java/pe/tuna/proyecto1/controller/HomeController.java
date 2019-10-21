@@ -1,5 +1,6 @@
 package pe.tuna.proyecto1.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/app") // Ruta del controlador de primer nivel, es opcional
 public class HomeController {
+    // Podemos obtener valores desde el properties
+    @Value("${texto.homecontroller.home.titulo}")
+    private String tituloHome;
+
+    @Value("${texto.homecontroller.perfil.titulo}")
+    private String tituloPerfil;
+
+    @Value("${texto.homecontroller.listar.titulo}")
+    private String tituloListar;
+
     /* Metodo de inicio
      * Podemos mapear varias rutas de respuesta a un mismo metodo
      * por ejemplo mapeando tres URLs
@@ -21,7 +32,7 @@ public class HomeController {
      */
     @GetMapping({"/", "", "/index", "/home"})
     public String home(Model model){
-        model.addAttribute("titulo", "Sr.");
+        model.addAttribute("titulo", tituloHome);
         return "index";
     }
 
@@ -34,7 +45,7 @@ public class HomeController {
 
         // Le pasamos a la vista los datos
         model.addAttribute("usuario", usuario);
-        model.addAttribute("titulo", "Perfil usuario: " + usuario.getNombre());
+        model.addAttribute("titulo", tituloPerfil);
 
         return "perfil";
     }
@@ -45,7 +56,7 @@ public class HomeController {
                                                 new Usuario("Jhon", "Doe", "jhon@tuna.pe"),
                                                 new Usuario("Richart","Stallman","richart@tuna.pe"));
 
-        model.addAttribute("titulo","Lista usuarios");
+        model.addAttribute("titulo",tituloListar);
         model.addAttribute("usuarioList", usuarioList);
 
         return "listar";
